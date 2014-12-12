@@ -1,0 +1,14 @@
+<html>
+    <head>
+    </head>
+    <body>
+        {% if city %}
+        <p><b>{{ city.city_name }} {{ city.rail_name }}</b></p><br/>
+        <ul>
+            {% for line in city.mapline_set.all %}
+            <li>{{ line.line_name }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </body>
+</html>
