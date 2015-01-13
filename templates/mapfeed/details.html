@@ -10,5 +10,11 @@
             {% endfor %}
         </ul>
         {% endif %}
+
+        {% if statuses %}
+            {% for status in statuses %}
+            <p>{{ status.text }}<br/><b>{{ status.created_at }}</b></p>
+            {% endfor %}
+        {% endif %}
     </body>
 </html>
