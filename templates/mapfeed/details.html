@@ -1,14 +1,423 @@
-<html>
-    <head>
-    </head>
-    <body>
-        {% if city %}
-        <p><b>{{ city.city_name }} {{ city.rail_name }}</b></p><br/>
-        <ul>
-            {% for line in city.mapline_set.all %}
-            <li>{{ line.line_name }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </body>
+<!DOCTYPE html>
+{% load i18n static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Washington DC Metro Railtracker</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+	
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+	
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Rail Tracker
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id ="rdsb" >Red Line</a>
+                </li>
+                <li>
+                    <a href="#" id ="orsb" >Orange Line</a>
+                </li>
+                <li>
+                    <a href="#" id ="svsb" >Silver Line</a>
+                </li>
+                <li>
+                    <a href="#" id ="blsb" >Blue Line</a>
+                </li>
+                <li>
+                    <a href="#" id ="ylsb" >Yellow Line</a>
+                </li>
+				<li>
+                    <a href="#" id ="grsb" >Green Line</a>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+						<!-- Header -->
+					    <img class="intro-header" src="{% static 'img/banner.png' %}" alt="Washington Metro" align="right">
+											
+						<div><script type="text/processing" data-processing-target="railMap">
+						void setup()
+							{
+								background(0,0);
+								size(1100,1100);
+								noLoop();
+								PFont fontA = loadFont("courier");
+								textFont(fontA, 14);  
+
+								var map = function (stationX, stationY){
+									ellipse (stationX, stationY, 10, 10);
+								};
+
+								var sz = 0.8;
+
+								var n = [
+									{x: 1204*sz, y:  633*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 1, name: "Addison Road"},			//0
+									{x:  951*sz, y:  805*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Anacostia"},			//1
+									{x:  809*sz, y:  596*sz, red: 0, blue: 0, orange: 0, yellow: 1, green: 1, silver: 0, name: "Archives"},
+									{x:  557*sz, y:  718*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 0, name: "Arlington Cemetery"},
+									{x:  345*sz, y:  599*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 1, name: "Ballston-MU"},
+									{x: 1140*sz, y:  633*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 1, name: "Benning Road"},			//5
+									{x:  495*sz, y:  307*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Bethesda"},
+									{x:  691*sz, y:  972*sz, red: 0, blue: 1, orange: 0, yellow: 1, green: 0, silver: 0, name: "Braddock Road"},
+									{x: 1101*sz, y:  891*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Branch Ave"},
+									{x:  923*sz, y:  414*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Brookland"},
+									{x: 1172*sz, y:  633*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 1, name: "Capitol Heights"},		//10
+									{x:  903*sz, y:  665*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Capitol South"},
+									{x: 1147*sz, y:  540*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "Cheverly"},
+									{x:  407*sz, y:  599*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 1, name: "Clarendon"},
+									{x:  596*sz, y:  376*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Cleveland Park"},
+									{x:  946*sz, y:  227*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "College Park"}, //Yellow 15
+									{x:  742*sz, y:  382*sz, red: 0, blue: 0, orange: 0, yellow: 1, green: 1, silver: 0, name: "Columbia Heights"},
+									{x:  976*sz, y:  826*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Congress Heights"},
+									{x:  438*sz, y:  599*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 1, name: "Court House"},
+									{x:  644*sz, y:  909*sz, red: 0, blue: 1, orange: 0, yellow: 1, green: 0, silver: 0, name: "Crystal City"},
+									{x: 1121*sz, y:  566*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "Deanwood"},				//20
+									{x:  209*sz, y:  588*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "Dunn Loring"},
+									{x:  642*sz, y:  423*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Dupont Circle"},
+									{x:  305*sz, y:  599*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 1, name: "East Falls Church"},
+									{x:  944*sz, y:  657*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Eastern Market"},
+									{x:  701*sz, y: 1073*sz, red: 0, blue: 0, orange: 0, yellow: 1, green: 0, silver: 0, name: "Eisenhower Avenue"},	//25
+									{x:  660*sz, y:  451*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Farragut North"},
+									{x:  626*sz, y:  492*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Farragut West"},
+									{x:  859*sz, y:  665*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Federal Center SW"},
+									{x:  722*sz, y:  595*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Federal Triangle"},
+									{x:  592*sz, y:  492*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Foggy Bottom"},			//30
+									{x:  753*sz, y:  122*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Forest Glen"},
+									{x:  850*sz, y:  325*sz, red: 1, blue: 0, orange: 0, yellow: 1, green: 1, silver: 0, name: "Fort Totten"},
+									{x:  462*sz, y: 1125*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 0, name: "Franconia-Springfield"},
+									{x:  525*sz, y:  337*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Friendship Heights"},
+									{x:  809*sz, y:  551*sz, red: 1, blue: 0, orange: 0, yellow: 1, green: 1, silver: 0, name: "Gallery Place"},		//35
+									{x:  775*sz, y:  349*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Geogia Ave-Petworth"},
+									{x:  753*sz, y:   50*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Glenmont"},
+									{x:  973*sz, y:  201*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Greenbelt"}, //Yellow Rush
+									{x:  230*sz, y:  542*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 1, name: "Greensboro"},
+									{x:  430*sz, y:  242*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Grosvenor-Strathmore"},	//40
+									{x:  701*sz, y: 1125*sz, red: 0, blue: 0, orange: 0, yellow: 1, green: 0, silver: 0, name: "Huntington"},
+									{x:  846*sz, y:  551*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Judiciary Square"},
+									{x:  691*sz, y: 1019*sz, red: 0, blue: 1, orange: 0, yellow: 1, green: 0, silver: 0, name: "King St"},
+									{x:  809*sz, y:  665*sz, red: 0, blue: 1, orange: 1, yellow: 1, green: 1, silver: 1, name: "L'Enfant"},
+									{x: 1173*sz, y:  514*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "Landover"},				//45
+									{x: 1267*sz, y:  633*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 1, name: "Largo Town Center"},
+									{x:  252*sz, y:  564*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 1, name: "McLean"},
+									{x:  687*sz, y:  492*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "McPheerson Square"},
+									{x:  462*sz, y:  274*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Medical Center"},
+									{x:  722*sz, y:  551*sz, red: 1, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Metro Center"},			//50
+									{x: 1095*sz, y:  592*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "Minnesota Ave"},
+									{x: 1235*sz, y:  633*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 1, name: "Morgan Boulevard"},
+									{x:  809*sz, y:  503*sz, red: 0, blue: 0, orange: 0, yellow: 1, green: 1, silver: 0, name: "Mt Vernon Sq"},
+									{x:  889*sz, y:  781*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Navy Yard"},
+									{x: 1048*sz, y:  839*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Naylor Road"},			//55
+									{x: 1199*sz, y:  488*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "New Carrollton"},
+									{x:  923*sz, y:  489*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "NoMa"},
+									{x:  619*sz, y:  804*sz, red: 0, blue: 1, orange: 0, yellow: 1, green: 0, silver: 0, name: "Pentagon"},
+									{x:  618*sz, y:  861*sz, red: 0, blue: 1, orange: 0, yellow: 1, green: 0, silver: 0, name: "Pentagon City"},
+									{x:  967*sz, y:  634*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Potomac Ave"},			//60
+									{x:  920*sz, y:  253*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Prince George's Plaza"}, //Yellow Rush
+									{x:  923*sz, y:  451*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Rhode Island Ave"},
+									{x:  333*sz, y:  145*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Rockville"},
+									{x:  691*sz, y:  936*sz, red: 0, blue: 1, orange: 0, yellow: 1, green: 0, silver: 0, name: "Ronald Reagan Washington National Airport"},
+									{x:  483*sz, y:  553*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Rosslyn"},				//65
+									{x:  301*sz, y:  113*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Shady Grove"},
+									{x:  809*sz, y:  461*sz, red: 0, blue: 0, orange: 0, yellow: 1, green: 1, silver: 0, name: "Shaw-Howard U"},
+									{x:  753*sz, y:  157*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Silver Spring"},
+									{x:  722*sz, y:  628*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Smithsonian"},
+									{x: 1005*sz, y:  845*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Southern Ave"},			//70
+									{x:  187*sz, y:  499*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 1, name: "Spring Hill"},
+									{x: 1016*sz, y:  623*sz, red: 0, blue: 1, orange: 1, yellow: 0, green: 0, silver: 1, name: "Stadium-Armory"},
+									{x: 1075*sz, y:  865*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Suitland"},
+									{x:  767*sz, y:  241*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Takoma"},
+									{x:  547*sz, y:  353*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Tenleytown"},			//75
+									{x:  365*sz, y:  177*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Twinbrook"},
+									{x:  230*sz, y:  542*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 1, name: "Tysons Corner"},
+									{x:  775*sz, y:  422*sz, red: 0, blue: 0, orange: 0, yellow: 1, green: 1, silver: 0, name: "U Street"},
+									{x:  923*sz, y:  526*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Union Station"},
+									{x:  517*sz, y: 1056*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 0, name: "Van Dorn Street"},		//80
+									{x:  576*sz, y:  357*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Van Ness"},
+									{x:  167*sz, y:  588*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "Vienna"},
+									{x:  376*sz, y:  599*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 1, name: "Virginia Sq-GMU"},
+									{x:  855*sz, y:  781*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Waterfront"},
+									{x:  251*sz, y:  588*sz, red: 0, blue: 0, orange: 1, yellow: 0, green: 0, silver: 0, name: "West Falls Church"},	//85
+									{x:  894*sz, y:  279*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "West Hyattsville"}, //Yellow Rush
+									{x:  753*sz, y:   86*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Wheaton"},
+									{x:  398*sz, y:  210*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "White Flint"},
+									{x:  166*sz, y:  478*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 1, name: "Wiehl-Reston East"},
+									{x:  619*sz, y:  399*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Woodley Park"},			//90
+								];
+								
+								strokeWeight(12);
+								noFill();										
+								
+								//Red Line
+								function RedLine(){
+								stroke(#BF1238);
+									bezier(n[66].x, n[66].y, 301*sz, 113*sz, 333*sz, 145*sz, n[63].x, n[63].y); //name: "Shady Grove"},
+									bezier(n[63].x, n[63].y, 333*sz, 145*sz, 365*sz, 177*sz, n[76].x, n[76].y); //name: "Rockville"},
+									bezier(n[76].x, n[76].y, 365*sz, 177*sz, 398*sz, 210*sz, n[88].x, n[88].y); //name: "Twinbrook"},
+									bezier(n[88].x, n[88].y, 398*sz, 210*sz, 430*sz, 242*sz, n[40].x, n[40].y); //name: "White Flint"},
+									bezier(n[40].x, n[40].y, 430*sz, 242*sz, 462*sz, 274*sz, n[49].x, n[49].y); //name: "Grosvenor-Strathmore"},
+									bezier(n[49].x, n[49].y, 462*sz, 274*sz, 495*sz, 307*sz, n[ 6].x, n[ 6].y); //name: "Medical Center"},
+									bezier(n[ 6].x, n[ 6].y, 495*sz, 307*sz, 525*sz, 337*sz, n[34].x, n[34].y); //name: "Bethesda"},
+									bezier(n[34].x, n[34].y, 541*sz, 353*sz, 541*sz, 353*sz, n[75].x, n[75].y); //name: "Friendship Heights"},
+									bezier(n[75].x, n[75].y, 572*sz, 353*sz, 572*sz, 353*sz, n[81].x, n[81].y); //name: "Tenleytown"},
+									bezier(n[81].x, n[81].y, 576*sz, 357*sz, 596*sz, 376*sz, n[14].x, n[14].y); //name: "Van Ness"},
+									bezier(n[14].x, n[14].y, 596*sz, 376*sz, 619*sz, 399*sz, n[90].x, n[90].y); //name: "Cleveland Park"},
+									bezier(n[90].x, n[90].y, 619*sz, 399*sz, 642*sz, 423*sz, n[22].x, n[22].y); //name: "Woodley Park"},
+									bezier(n[22].x, n[22].y, 660*sz, 441*sz, 660*sz, 441*sz, n[26].x, n[26].y); //name: "Dupont Circle"},
+									bezier(n[26].x, n[26].y, 660*sz, 551*sz, 660*sz, 551*sz, n[50].x, n[50].y); //name: "Farragut North"},
+									bezier(n[50].x, n[50].y, 722*sz, 551*sz, 809*sz, 551*sz, n[35].x, n[35].y); //name: "Metro Center"},
+									bezier(n[35].x, n[35].y, 809*sz, 551*sz, 846*sz, 551*sz, n[42].x, n[42].y); //name: "Gallery Place"},
+									bezier(n[42].x, n[42].y, 923*sz, 551*sz, 923*sz, 551*sz, n[79].x, n[79].y); //name: "Judiciary Square"},
+									bezier(n[79].x, n[79].y, 923*sz, 526*sz, 923*sz, 489*sz, n[57].x, n[57].y); //name: "Union Station"},
+									bezier(n[57].x, n[57].y, 923*sz, 489*sz, 923*sz, 451*sz, n[62].x, n[62].y); //name: "NoMa"},
+									bezier(n[62].x, n[62].y, 923*sz, 451*sz, 923*sz, 414*sz, n[ 9].x, n[ 9].y); //name: "Rhode Island Ave"},
+									bezier(n[ 9].x, n[ 9].y, 923*sz, 400*sz, 923*sz, 400*sz, n[32].x, n[32].y); //name: "Brookland"},
+									bezier(n[32].x, n[32].y, 850*sz, 325*sz, 767*sz, 241*sz, n[74].x, n[74].y); //name: "Fort Totten"},
+									bezier(n[74].x, n[74].y, 753*sz, 227*sz, 753*sz, 227*sz, n[68].x, n[68].y); //name: "Takoma"},
+									bezier(n[68].x, n[68].y, 753*sz, 157*sz, 753*sz, 122*sz, n[31].x, n[31].y); //name: "Silver Spring"},
+									bezier(n[31].x, n[31].y, 753*sz, 122*sz, 753*sz,  86*sz, n[87].x, n[87].y); //name: "Forest Glen"},
+									bezier(n[87].x, n[87].y, 753*sz,  86*sz, 753*sz,  50*sz, n[37].x, n[37].y); //name: "Wheaton"},
+									//name: "Glenmont"},
+								}
+								RedLine();
+							
+								// Orange Line
+								function OrangeLine(){
+								stroke(#DE8703);
+									bezier(n[82].x, n[82].y, 167*sz, 588*sz, 209*sz, 588*sz, n[21].x, n[21].y); //name: "Vienna"},
+									bezier(n[21].x, n[21].y, 209*sz, 588*sz, 251*sz, 588*sz, n[85].x, n[85].y); //name: "Dunn Loring"},
+									bezier(n[85].x, n[85].y, 251*sz, 588*sz, 305*sz, 599*sz, n[23].x, n[23].y); //name: "West Falls Church"},
+									bezier(n[23].x, n[23].y, 305*sz, 599*sz, 345*sz, 599*sz, n[ 4].x, n[ 4].y); //name: "East Falls Church"},
+									bezier(n[ 4].x, n[ 4].y, 345*sz, 599*sz, 376*sz, 599*sz, n[83].x, n[83].y); //name: "Ballston-MU"},
+									bezier(n[83].x, n[83].y, 376*sz, 599*sz, 407*sz, 599*sz, n[13].x, n[13].y); //name: "Virginia Sq-GMU"},
+									bezier(n[13].x, n[13].y, 407*sz, 599*sz, 438*sz, 599*sz, n[18].x, n[18].y); //name: "Clarendon"},
+									bezier(n[18].x, n[18].y, 483*sz, 599*sz, 483*sz, 599*sz, n[65].x, n[65].y); //name: "Court House"},
+									bezier(n[65].x, n[65].y, 483*sz, 492*sz, 483*sz, 492*sz, n[30].x, n[30].y); //name: "Rosslyn"},
+									bezier(n[30].x, n[30].y, 592*sz, 492*sz, 626*sz, 492*sz, n[27].x, n[27].y); //name: "Foggy Bottom"},
+									bezier(n[27].x, n[27].y, 626*sz, 492*sz, 687*sz, 492*sz, n[48].x, n[48].y); //name: "Farragut West"},
+									bezier(n[48].x, n[48].y, 722*sz, 492*sz, 722*sz, 492*sz, n[50].x, n[50].y); //name: "McPherson Square"},
+									bezier(n[50].x, n[50].y, 722*sz, 551*sz, 722*sz, 595*sz, n[29].x, n[29].y); //name: "Metro Center"},
+									bezier(n[29].x, n[29].y, 722*sz, 595*sz, 722*sz, 628*sz, n[69].x, n[69].y); //name: "Federal Triangle"},
+									bezier(n[69].x, n[69].y, 722*sz, 665*sz, 722*sz, 665*sz, n[44].x, n[44].y); //name: "Smithsonian"},
+									bezier(n[44].x, n[44].y, 809*sz, 665*sz, 859*sz, 665*sz, n[28].x, n[28].y); //name: "L'Enfant"},
+									bezier(n[28].x, n[28].y, 859*sz, 665*sz, 903*sz, 665*sz, n[11].x, n[11].y); //name: "Federal Center SW"},
+									bezier(n[11].x, n[11].y, 942*sz, 665*sz, 942*sz, 655*sz, n[24].x, n[24].y); //name: "Capitol South"},
+									bezier(n[24].x, n[24].y, 944*sz, 657*sz, 967*sz, 634*sz, n[60].x, n[60].y); //name: "Eastern Market"},
+									bezier(n[60].x, n[60].y, 978*sz, 623*sz, 978*sz, 623*sz, n[72].x, n[72].y); //name: "Potomac Ave"},
+									bezier(n[72].x, n[72].y,1064*sz, 623*sz,1064*sz, 623*sz, n[51].x, n[51].y); //name: "Stadium-Armory"},
+									bezier(n[51].x, n[51].y,1095*sz, 592*sz,1121*sz, 566*sz, n[20].x, n[20].y); //name: "Minnesota Ave"},
+									bezier(n[20].x, n[20].y,1121*sz, 566*sz,1147*sz, 540*sz, n[12].x, n[12].y); //name: "Deanwood"},
+									bezier(n[12].x, n[12].y,1147*sz, 540*sz,1173*sz, 514*sz, n[45].x, n[45].y); //name: "Cheverly"},
+									bezier(n[45].x, n[45].y,1173*sz, 514*sz,1199*sz, 488*sz, n[56].x, n[56].y); //name: "Landover"},
+									//name: "New Carrollton"},
+								}
+								OrangeLine();
+								
+								//Silver Line
+								function SilverLine(){
+								stroke(#A1A3A1);
+									bezier(n[89].x, n[89].y, n[89].x, n[89].y, n[71].x, n[71].y, n[71].x, n[71].y); //name: "Wiehl-Reston East"},
+									bezier(n[71].x, n[71].y, n[71].x, n[71].y, n[39].x, n[39].y, n[39].x, n[39].y); //name: "Spring Hill"},
+									bezier(n[39].x, n[39].y, n[39].x, n[39].y, n[77].x, n[77].y, n[77].x, n[77].y); //name: "Greensboro"},
+									bezier(n[77].x, n[77].y, n[77].x, n[77].y, n[47].x, n[47].y, n[47].x, n[47].y); //name: "Tysons Corner"},
+									bezier(n[47].x, n[47].y, n[47].x + (n[23].y - n[47].y), n[23].y, n[47].x + (n[23].y - n[47].y), n[23].y, n[23].x, n[23].y); //name: "McLean"},
+									bezier(n[23].x, n[23].y, n[23].x, n[23].y, n[ 4].x, n[ 4].y, n[ 4].x, n[ 4].y); //name: "East Falls Church"},
+									bezier(n[ 4].x, n[ 4].y, n[ 4].x, n[ 4].y, n[83].x, n[83].y, n[83].x, n[83].y); //name: "Ballston-MU"},
+									bezier(n[83].x, n[83].y, n[83].x, n[83].y, n[13].x, n[13].y, n[13].x, n[13].y); //name: "Virginia Sq-GMU"},
+									bezier(n[13].x, n[13].y, 407*sz, 599*sz, 438*sz, 599*sz, n[18].x, n[18].y); //name: "Clarendon"},
+									bezier(n[18].x, n[18].y, 483*sz, 599*sz, 483*sz, 599*sz, n[65].x, n[65].y); //name: "Court House"},
+									bezier(n[65].x, n[65].y, 483*sz, 492*sz, 483*sz, 492*sz, n[30].x, n[30].y); //name: "Rosslyn"},
+									bezier(n[30].x, n[30].y, 592*sz, 492*sz, 626*sz, 492*sz, n[27].x, n[27].y); //name: "Foggy Bottom"},
+									bezier(n[27].x, n[27].y, 626*sz, 492*sz, 687*sz, 492*sz, n[48].x, n[48].y); //name: "Farragut West"},
+									bezier(n[48].x, n[48].y, 722*sz, 492*sz, 722*sz, 492*sz, n[50].x, n[50].y); //name: "McPherson Square"},
+									bezier(n[50].x, n[50].y, 722*sz, 551*sz, 722*sz, 595*sz, n[29].x, n[29].y); //name: "Metro Center"},
+									bezier(n[29].x, n[29].y, 722*sz, 595*sz, 722*sz, 628*sz, n[69].x, n[69].y); //name: "Federal Triangle"},
+									bezier(n[69].x, n[69].y, 722*sz, 665*sz, 722*sz, 665*sz, n[44].x, n[44].y); //name: "Smithsonian"},
+									bezier(n[44].x, n[44].y, 809*sz, 665*sz, 859*sz, 665*sz, n[28].x, n[28].y); //name: "L'Enfant"},
+									bezier(n[28].x, n[28].y, 859*sz, 665*sz, 903*sz, 665*sz, n[11].x, n[11].y); //name: "Federal Center SW"},
+									bezier(n[11].x, n[11].y, 942*sz, 665*sz, 942*sz, 655*sz, n[24].x, n[24].y); //name: "Capitol South"},
+									bezier(n[24].x, n[24].y, 944*sz, 657*sz, 967*sz, 634*sz, n[60].x, n[60].y); //name: "Eastern Market"},
+									bezier(n[60].x, n[60].y, 978*sz, 623*sz, 978*sz, 623*sz, n[72].x, n[72].y); //name: "Potomac Ave"},
+									bezier(n[72].x, n[72].y,1064*sz, 623*sz,1064*sz, 623*sz, n[ 5].x, n[ 5].y); //name: "Stadium-Armory"},
+									bezier(n[ 5].x, n[ 5].y,1140*sz, 633*sz,1172*sz, 633*sz, n[10].x, n[10].y); //name: "Benning Road"},
+									bezier(n[10].x, n[10].y,1172*sz, 633*sz,1204*sz, 633*sz, n[ 0].x, n[ 0].y); //name: "Capitol Heights"},
+									bezier(n[ 0].x, n[ 0].y,1204*sz, 633*sz,1235*sz, 633*sz, n[52].x, n[52].y); //name: "Addison Road"},
+									bezier(n[52].x, n[52].y,1235*sz, 633*sz,1267*sz, 633*sz, n[46].x, n[46].y); //name: "Morgan Boulevard"},
+									//name: "Largo Town Center"},
+								}
+								SilverLine();
+
+								
+								// Blue Line
+								function BlueLine(){
+								stroke(#0A94D6);
+								    bezier(n[33].x, n[33].y, 462*sz,1056*sz, 462*sz,1056*sz, n[80].x, n[80].y); //name: "Franconia-Springfield"},
+									bezier(n[80].x, n[80].y, 691*sz,1056*sz, 691*sz,1056*sz, n[43].x, n[43].y); //name: "Van Dorn Street"},
+									bezier(n[43].x, n[43].y, 691*sz,1019*sz, 691*sz, 972*sz, n[ 7].x, n[ 7].y); //name: "King St"},
+									bezier(n[ 7].x, n[ 7].y, 691*sz, 972*sz, 691*sz, 936*sz, n[64].x, n[64].y); //name: "Braddock Road"},
+									bezier(n[64].x, n[64].y, 691*sz, 909*sz, 691*sz, 909*sz, n[19].x, n[19].y); //name: "Ronald Reagan Washington National Airport"},
+									bezier(n[19].x, n[19].y, 618*sz, 909*sz, 618*sz, 909*sz, n[59].x, n[59].y); //name: "Crystal City"},
+									bezier(n[59].x, n[59].y, 618*sz, 861*sz, 619*sz, 804*sz, n[58].x, n[58].y); //name: "Pentagon City"},
+									bezier(n[58].x, n[58].y, 619*sz, 780*sz, 619*sz, 780*sz, n[ 3].x, n[ 3].y); //name: "Pentagon"},
+									bezier(n[ 3].x, n[ 3].y, 483*sz, 644*sz, 483*sz, 644*sz, n[65].x, n[65].y); //name: "Arlington Cemetery"},
+									bezier(n[65].x, n[65].y, 483*sz, 492*sz, 483*sz, 492*sz, n[30].x, n[30].y); //name: "Rosslyn"},
+									bezier(n[30].x, n[30].y, 592*sz, 492*sz, 626*sz, 492*sz, n[27].x, n[27].y); //name: "Foggy Bottom"},
+									bezier(n[27].x, n[27].y, 626*sz, 492*sz, 687*sz, 492*sz, n[48].x, n[48].y); //name: "Farragut West"},
+									bezier(n[48].x, n[48].y, 722*sz, 492*sz, 722*sz, 492*sz, n[50].x, n[50].y); //name: "McPherson Square"},
+									bezier(n[50].x, n[50].y, 722*sz, 551*sz, 722*sz, 595*sz, n[29].x, n[29].y); //name: "Metro Center"},
+									bezier(n[29].x, n[29].y, 722*sz, 595*sz, 722*sz, 628*sz, n[69].x, n[69].y); //name: "Federal Triangle"},
+									bezier(n[69].x, n[69].y, 722*sz, 665*sz, 722*sz, 665*sz, n[44].x, n[44].y); //name: "Smithsonian"},
+									bezier(n[44].x, n[44].y, 809*sz, 665*sz, 859*sz, 665*sz, n[28].x, n[28].y); //name: "L'Enfant"},
+									bezier(n[28].x, n[28].y, 859*sz, 665*sz, 903*sz, 665*sz, n[11].x, n[11].y); //name: "Federal Center SW"},
+									bezier(n[11].x, n[11].y, 942*sz, 665*sz, 942*sz, 655*sz, n[24].x, n[24].y); //name: "Capitol South"},
+									bezier(n[24].x, n[24].y, 944*sz, 657*sz, 967*sz, 634*sz, n[60].x, n[60].y); //name: "Eastern Market"},
+									bezier(n[60].x, n[60].y, 978*sz, 623*sz, 978*sz, 623*sz, n[72].x, n[72].y); //name: "Potomac Ave"},
+									bezier(n[72].x, n[72].y,1064*sz, 623*sz,1064*sz, 623*sz, n[ 5].x, n[ 5].y); //name: "Stadium-Armory"},
+									bezier(n[ 5].x, n[ 5].y,1140*sz, 633*sz,1172*sz, 633*sz, n[10].x, n[10].y); //name: "Benning Road"},
+									bezier(n[10].x, n[10].y,1172*sz, 633*sz,1204*sz, 633*sz, n[ 0].x, n[ 0].y); //name: "Capitol Heights"},
+									bezier(n[ 0].x, n[ 0].y,1204*sz, 633*sz,1235*sz, 633*sz, n[52].x, n[52].y); //name: "Addison Road"},
+									bezier(n[52].x, n[52].y,1235*sz, 633*sz,1267*sz, 633*sz, n[46].x, n[46].y); //name: "Morgan Boulevard"},
+									//name: "Largo Town Center"},
+								}
+								BlueLine();
+								
+								//Yellow Line
+								function YellowLine(){
+								stroke(#F7D417);
+									bezier(n[41].x, n[41].y, n[41].x, n[41].y, n[25].x, n[25].y, n[25].x, n[25].y); //name: "Huntington"},
+									bezier(n[25].x, n[25].y, n[25].x, n[25].y, n[43].x, n[43].y, n[43].x, n[43].y); //name: "Eisenhower Avenue"},
+									bezier(n[43].x, n[43].y, n[43].x, n[43].y, n[ 7].x, n[ 7].y, n[ 7].x, n[ 7].y); //name: "King St"},
+									bezier(n[ 7].x, n[ 7].y, n[ 7].x, n[ 7].y, n[64].x, n[64].y, n[64].x, n[64].y); //name: "Braddock Road"},
+									bezier(n[64].x, n[64].y, 691*sz, 909*sz, 691*sz, 909*sz, n[19].x, n[19].y); //name: "Ronald Reagan Washington National Airport"},
+									bezier(n[19].x, n[19].y, 618*sz, 909*sz, 618*sz, 909*sz, n[59].x, n[59].y); //name: "Crystal City"},
+									bezier(n[59].x, n[59].y, n[59].x, n[59].y, n[58].x, n[58].y, n[58].x, n[58].y); //name: "Pentagon City"},
+									bezier(n[58].x, n[58].y, n[58].x + n[58].y - (n[58].y + n[44].y)/2, (n[58].y + n[44].y)/2, n[58].x + n[58].y - (n[58].y + n[44].y)/2, (n[58].y + n[44].y)/2, (n[58].x + n[44].x)/2, (n[58].y + n[44].y)/2); //name: "Pentagon"},
+									bezier((n[58].x + n[44].x)/2, (n[58].y + n[44].y)/2, n[44].x, (n[58].y + n[44].y)/2, n[44].x, (n[58].y + n[44].y)/2, n[44].x, n[44].y);
+									bezier(n[44].x, n[44].y, n[44].x, n[44].y, n[02].x, n[02].y, n[02].x, n[02].y); //name: "L'Enfant"},44
+									bezier(n[02].x, n[02].y, n[02].x, n[02].y, n[35].x, n[35].y, n[35].x, n[35].y); //name: "Archives"},2
+									bezier(n[35].x, n[35].y, n[35].x, n[35].y, n[53].x, n[53].y, n[53].x, n[53].y); //name: "Gallery Place"},35
+									bezier(n[53].x, n[53].y, n[53].x, n[53].y, n[67].x, n[67].y, n[67].x, n[67].y); //name: "Mt Vernon Sq"},53
+									bezier(n[67].x, n[67].y, n[67].x, n[78].y, n[67].x, n[78].y, n[78].x, n[78].y); //name: "Shaw-Howard U"},67
+									bezier(n[78].x, n[78].y, n[16].x, n[78].y, n[16].x, n[78].y, n[16].x, n[16].y); //name: "U Street"},78
+									bezier(n[16].x, n[16].y, n[16].x, n[36].y, n[16].x, n[36].y, n[36].x, n[36].y); //name: "Columbia Heights"},16
+									bezier(n[36].x, n[36].y, n[32].x - (n[36].y - n[32].y), n[36].y, n[32].x - (n[36].y - n[32].y), n[36].y, n[32].x, n[32].y); //name: "Geogia Ave-Petworth"},36
+									//name: "Fort Totten"},32
+								}
+								YellowLine ();
+								
+								//Green Line
+								function GreenLine(){
+								stroke(#00B052);
+									bezier(n[08].x, n[08].y, n[08].x, n[08].y, n[73].x, n[73].y, n[73].x, n[73].y); //name: "Branch Ave"},8
+									bezier(n[73].x, n[73].y, n[73].x, n[73].y, n[55].x, n[55].y, n[55].x, n[55].y); //name: "Suitland"},73
+									bezier(n[55].x, n[55].y, n[55].x * .98, n[55].y * .98, n[55].x * .98, n[55].y * .98, n[70].x, n[70].y); //name: "Naylor Road"},55
+									bezier(n[70].x, n[70].y, n[70].x * .996, n[70].y * 1.003, n[70].x * .996, n[70].y * 1.003, n[17].x, n[17].y); //name: "Southern Ave"},70
+									bezier(n[17].x, n[17].y, n[17].x, n[17].y, n[01].x, n[01].y, n[01].x, n[01].y); //name: "Congress Heights"},17
+									bezier(n[01].x, n[01].y, n[01].x * .97, n[54].y, n[01].x * .97, n[54].y, n[54].x, n[54].y); //name: "Anacostia"},1
+									bezier(n[54].x, n[54].y, n[54].x, n[54].y, n[84].x, n[84].y, n[84].x, n[84].y); //name: "Navy Yard"},54
+									bezier(n[84].x, n[84].y, n[44].x, n[84].y, n[44].x, n[84].y, n[44].x, n[44].y); //name: "Waterfront"},84
+									bezier(n[44].x, n[44].y, n[44].x, n[44].y, n[02].x, n[02].y, n[02].x, n[02].y); //name: "L'Enfant"},44
+									bezier(n[02].x, n[02].y, n[02].x, n[02].y, n[35].x, n[35].y, n[35].x, n[35].y); //name: "Archives"},2
+									bezier(n[35].x, n[35].y, n[35].x, n[35].y, n[53].x, n[53].y, n[53].x, n[53].y); //name: "Gallery Place"},35
+									bezier(n[53].x, n[53].y, n[53].x, n[53].y, n[67].x, n[67].y, n[67].x, n[67].y); //name: "Mt Vernon Sq"},53
+									bezier(n[67].x, n[67].y, n[67].x, n[78].y, n[67].x, n[78].y, n[78].x, n[78].y); //name: "Shaw-Howard U"},67
+									bezier(n[78].x, n[78].y, n[16].x, n[78].y, n[16].x, n[78].y, n[16].x, n[16].y); //name: "U Street"},78
+									bezier(n[16].x, n[16].y, n[16].x, n[36].y, n[16].x, n[36].y, n[36].x, n[36].y); //name: "Columbia Heights"},16
+									bezier(n[36].x, n[36].y, n[32].x - (n[36].y - n[32].y), n[36].y, n[32].x - (n[36].y - n[32].y), n[36].y, n[32].x, n[32].y); //name: "Geogia Ave-Petworth"},36
+									bezier(n[32].x, n[32].y, n[32].x, n[32].y, n[86].x, n[86].y, n[86].x, n[86].y); //name: "Fort Totten"},32
+									bezier(n[86].x, n[86].y, n[86].x, n[86].y, n[61].x, n[61].y, n[61].x, n[61].y); //name: "West Hyattsville"},86
+									bezier(n[61].x, n[61].y, n[61].x, n[61].y, n[15].x, n[15].y, n[15].x, n[15].y); //name: "Prince George's Plaza"},61
+									bezier(n[15].x, n[15].y, n[15].x, n[15].y, n[38].x, n[38].y, n[38].x, n[38].y); //name: "College Park"},15
+									 //name: Greenbelt"},38
+								}
+								GreenLine();
+
+								
+								fill(255);
+								strokeWeight(1);
+								stroke(0);
+								function railMap(){
+									for (var i = 0; i<n.length; i++){
+										map(n[i].x, n[i].y, 10,10);
+									}
+								}
+
+								railMap();
+
+							}
+						</script>
+						<canvas id="railMap" class="img-responsive"></canvas>
+						</div>
+						
+
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'js/bootstrap.min.js' %"></script>
+
+	<!-- processing.js -->
+	<script src="{% static 'js/processing.js' %}"></script>
+	
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
 </html>
