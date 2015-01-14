@@ -41,9 +41,13 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#">
-                        Rail Tracker
-                    </a>
+                <a href="#">
+                    {% if city %}
+                    {{ city.city_name }} {{ city.rail_name }} Tracker
+                    {% else %}
+                    Rail Tracker
+                    {% endif %}
+                </a>
                 </li>
                 <li>
                     <a href="#" id ="rdsb" >Red Line</a>
