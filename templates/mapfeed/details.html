@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 {% load i18n static %}
 <html lang="en">
@@ -10,7 +11,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Washington DC Metro Railtracker</title>
+    {% if city %}
+        <title>{{ city.city_name }} {{ city.rail_name }} Tracker</title>
+    {% else %}
+        <title>Rail Tracker</title>
+    {% endif %}
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -401,6 +406,14 @@
     </div>
     <!-- /#wrapper -->
 
+    <div>
+    {% if statuses %}
+    {% for status in statuses %}
+        <p>{{ status.text }}<br/><br>{{ status.created_at }}</b></p>
+    {% endfor %}
+    {% endif %}
+    </div>
+
     <!-- jQuery -->
     <script src="{% static 'js/jquery.js' %}"></script>
 
@@ -419,5 +432,4 @@
     </script>
 
 </body>
-
 </html>
