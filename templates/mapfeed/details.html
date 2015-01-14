@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 {% load i18n static %}
 <html lang="en">
@@ -18,10 +17,10 @@
     {% endif %}
 
     <!-- Bootstrap Core CSS -->
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'mapfeed/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+    <link href="{% static 'mapfeed/css/simple-sidebar.css' %}" rel="stylesheet">
 	
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -80,7 +79,7 @@
                 <div class="row">
                     <div class="col-lg-12">
 						<!-- Header -->
-					    <img class="intro-header" src="{% static 'img/banner.png' %}" alt="Washington Metro" align="right">
+					    <img class="intro-header" src="{% static 'mapfeed/img/banner.png' %}" alt="Washington Metro" align="right">
 											
 						<div><script type="text/processing" data-processing-target="railMap">
 						void setup()
@@ -409,19 +408,19 @@
     <div>
     {% if statuses %}
     {% for status in statuses %}
-        <p>{{ status.text }}<br/><br>{{ status.created_at }}</b></p>
+        <p>{{ status.text }}<br/><b>{{ status.created_at }}</b></p>
     {% endfor %}
     {% endif %}
     </div>
 
     <!-- jQuery -->
-    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'mapfeed/js/jquery.js' %}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{% static 'js/bootstrap.min.js' %"></script>
+    <script src="{% static 'mapfeed/js/bootstrap.min.js' %}"></script>
 
 	<!-- processing.js -->
-	<script src="{% static 'js/processing.js' %}"></script>
+	<script src="{% static 'mapfeed/js/processing.js' %}"></script>
 	
     <!-- Menu Toggle Script -->
     <script>
