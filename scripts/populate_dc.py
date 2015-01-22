@@ -1,7 +1,6 @@
 from django.conf import settings
 from pprint import pprint
 from railtracker.mapfeed.models import MapStation, MapLine, MapCity
-from time import gmtime, strftime
 import httplib, urllib, base64
 import json
 

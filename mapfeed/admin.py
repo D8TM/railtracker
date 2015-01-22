@@ -1,4 +1,4 @@
-from mapfeed.models import MapPath, MapCity, MapLine, MapStation
+from mapfeed.models import MapPath, MapCity, MapLine, MapStation, Incident
 from django.contrib import admin
 
 admin.site.register(MapCity)
