@@ -3,31 +3,47 @@ from fields import ListField
 
 # Create your models here.
 class MapCity(models.Model):
-   create_date = models.DateTimeField('Date Created')
+   create_date = models.DateTimeField('Date Created', auto_now_add=True)
    city_name = models.CharField(max_length=200)
    rail_name = models.CharField(max_length=200)
+   twitter_id = models.CharField(max_length=15, null=True, blank=True)
 
    def __unicode__(self):
         return self.city_name + " " + self.rail_name
 
 class MapStation(models.Model):
+    #Station Name
     station_name = models.CharField(max_length=200)
-    status = models.IntegerField()
-    status_tweet = models.CharField(max_length=140)
-    x_coord = models.IntegerField()
-    y_coord = models.IntegerField()
+
+    #Station Code
+    station_code = models.CharField(max_length=3)
+
+    #Latitude and Longitude
+    lat = models.DecimalField(max_digits=13, decimal_places=10)
+    lon = models.DecimalField(max_digits=13, decimal_places=10)
+
+    #Coordinates for customized map
+    x_coord = models.IntegerField(null=True, blank=True)
+    y_coord = models.IntegerField(null=True, blank=True)
+
+    #Two-character abbreviation for line serviced
+    line_code_1 = models.CharField(max_length=2)
+    line_code_2 = models.CharField(max_length=2, null=True, blank=True)
+    line_code_3 = models.CharField(max_length=2, null=True, blank=True)
+    line_code_4 = models.CharField(max_length=2, null=True, blank=True)
 
     def __unicode__(self):
         return self.station_name
 
 class MapLine(models.Model):
+    #Parent map
     map = models.ForeignKey(MapCity)
+
+    #Line name/color/letter/number
     line_name = models.CharField(max_length=200)
-    status = models.IntegerField()
-    reverse_status = models.IntegerField()
-    status_tweet = models.CharField(max_length=140)
-    reverse_tweet = models.CharField(max_length=140)
-    #stations = ListField()
+
+    #Line code
+    line_code = models.CharField(max_length=2)
 
     def __unicode__(self):
         return self.line_name
@@ -39,6 +55,27 @@ class MapPath(models.Model):
     def __unicode__(self):
         return self.station_a + " to " + self.station_b
 
-#class Feed(models.Model):
-#    def __unicode__(self):
-#        return '-'
+class Incident(models.Model):
+    #Incident date
+    incident_date = models.DateTimeField()
+
+    #Free-text description of incident
+    description = models.TextField()
+
+    #Incident category
+    incident_type = models.CharField(max_length=15)
+
+    #Dictates animation. DEL = delay; ALE = alert
+    warning = models.CharField(max_length=3)
+
+    #Stations affected
+    #station_1 = models.ForeignKey(MapStation)
+    #station_2 = models.ForeignKey(MapStation)
+
+    #Lines affected
+    #line_1 = models.ForeignKey(MapLine)
+    #line_2 = models.ForeignKey(MapLine)
+    #line_3 = models.ForeignKey(MapLine)
+
+    def __unicode__(self):
+        return self.incident_date + "(" + self.incident_type + ")"
