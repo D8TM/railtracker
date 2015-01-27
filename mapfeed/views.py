@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
-from mapfeed.models import MapCity
+from mapfeed.models import MapCity, MapLine
 import twitter
 
 def index(request):
@@ -14,3 +14,12 @@ def details(request, city_id):
     statuses = api.GetUserTimeline(screen_name='MetroRailInfo')
 
     return render_to_response('mapfeed/details.html', {'city': city, 'statuses': statuses})
+
+def line(request, city_id, line_id):
+    city = get_object_or_404(MapCity, pk=city_id)
+    line = get_object_or_404(MapLine, pk=line_id)
+
+    return render_to_response('mapfeed/line.html',
+            {'city': city,
+                'line': line}
+    )
