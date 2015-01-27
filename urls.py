@@ -16,5 +16,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^mapfeed/$', 'mapfeed.views.index'),
     url(r'^mapfeed/(?P<city_id>\d+)/$', 'mapfeed.views.details'),
-    url(r'^mapfeed/(?P<city_id>\d+)/(?P<line_id>\d)$', 'mapfeed.views.line'),
+    url(r'^mapfeed/(?P<city_id>\d+)/line/(?P<line_id>\d)$', 'mapfeed.views.line'),
 )
