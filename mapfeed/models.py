@@ -11,6 +11,19 @@ class MapCity(models.Model):
    def __unicode__(self):
         return self.city_name + " " + self.rail_name
 
+class MapLine(models.Model):
+    #Parent map
+    map = models.ForeignKey(MapCity)
+
+    #Line name/color/letter/number
+    line_name = models.CharField(max_length=200)
+
+    #Line code
+    line_code = models.CharField(max_length=2)
+
+    def __unicode__(self):
+        return self.line_name
+
 class MapStation(models.Model):
     #Station Name
     station_name = models.CharField(max_length=200)
@@ -26,27 +39,11 @@ class MapStation(models.Model):
     x_coord = models.IntegerField(null=True, blank=True)
     y_coord = models.IntegerField(null=True, blank=True)
 
-    #Two-character abbreviation for line serviced
-    line_code_1 = models.CharField(max_length=2)
-    line_code_2 = models.CharField(max_length=2, null=True, blank=True)
-    line_code_3 = models.CharField(max_length=2, null=True, blank=True)
-    line_code_4 = models.CharField(max_length=2, null=True, blank=True)
+    #Lines that run through the station
+    lines = models.ManyToManyField(MapLine)
 
     def __unicode__(self):
         return self.station_name
-
-class MapLine(models.Model):
-    #Parent map
-    map = models.ForeignKey(MapCity)
-
-    #Line name/color/letter/number
-    line_name = models.CharField(max_length=200)
-
-    #Line code
-    line_code = models.CharField(max_length=2)
-
-    def __unicode__(self):
-        return self.line_name
 
 class MapPath(models.Model):
     station_a = models.ForeignKey(MapStation, related_name='path_a')
@@ -69,13 +66,10 @@ class Incident(models.Model):
     warning = models.CharField(max_length=3)
 
     #Stations affected
-    #station_1 = models.ForeignKey(MapStation)
-    #station_2 = models.ForeignKey(MapStation)
+    stations = models.ManyToManyField(MapStation)
 
     #Lines affected
-    #line_1 = models.ForeignKey(MapLine)
-    #line_2 = models.ForeignKey(MapLine)
-    #line_3 = models.ForeignKey(MapLine)
+    lines = models.ManyToManyField(MapLine)
 
     def __unicode__(self):
         return self.incident_date + "(" + self.incident_type + ")"
