@@ -46,7 +46,7 @@
 	                {% if lines %}
 	                {% for line in lines %}
 	                <li>
-	                    <a href="../{{ city.id }}/line/{{ line.id }}" id="{{line.line_code}}sb">{{ line.line_name }}</a>
+                    <a href="../{{ city.id }}/line/{{ line.id }}" id="{% filter lower %}{{ line.line_code }}{% endfilter %}sb">{{ line.line_name }}</a>
 	                </li>
 	                {% endfor %}
 	                {% endif %}
