@@ -33,6 +33,7 @@ def loadLines ():
         l_model.save()
 
 def loadStations ():
+    city = MapCity.objects.get(city_name="Washington D.C.").id
     try:
         conn.request("GET", "/Rail.svc/json/jStations?%s" % params, "", headers)
         response = conn.getresponse()
@@ -44,17 +45,22 @@ def loadStations ():
     #Go through station list and load into database
     for station in decoded_stations['Stations']:
         print station['Name']
-        s_model = MapStation(
-                station_name=station['Name'],
-                lat=station['Lat'],
-                lon=station['Lon'],
-                line_code_1=station['LineCode1'],
-                line_code_2=station['LineCode2'],
-                line_code_3=station['LineCode3'],
-                line_code_4=station['LineCode4'],
-                station_code=station['Code']
-        )
-        s_model.save()
+        try:
+            s_model = MapStation.objects.get(station_name=station['Name'])
+        except Exception:
+            s_model = MapStation(
+                    station_name=station['Name'],
+                    lat=station['Lat'],
+                    lon=station['Lon'],
+                    station_code=station['Code']
+            )
+            s_model.save()
+        for x in range(1, 5):
+            try:
+                line = MapLine.objects.get(line_code=station['LineCode' + str(x)], map=city)
+                s_model.lines.add(line)
+            except Exception:
+                print "Line " + str(x) + " is invalid!"
 
 headers = {
 }
@@ -65,5 +71,5 @@ params = urllib.urlencode({
 
 conn = httplib.HTTPSConnection('api.wmata.com')
 loadCity()
-loadStations()
 loadLines()
+loadStations()
