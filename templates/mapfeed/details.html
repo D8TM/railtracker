@@ -4,7 +4,7 @@
 {% if city %}
     {{ city.city_name }} {{ city.rail_name }} Tracker
 {% endif %}
-{% endblock %}
+{% endblock title %}
 
 {% block sidelines %}
 {% if city %}
@@ -17,7 +17,7 @@
     {% endfor %}
     {% endif %}
 {% endif %}
-{% endblock %}
+{% endblock sidelines %}
 
 {% block tweets %}
 {% if statuses %}
@@ -25,4 +25,4 @@
     <p>{{ status.text }}<br/><b>{{ status.created_at }}</b></p>
 {% endfor %}
 {% endif %}
-{% endblock %}
+{% endblock tweets %}

@@ -8,7 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{% block title %}Rail Tracker{% endblock %}</title>
+        <title>{% block title %}Rail Tracker{% endblock title %}</title>
    
         <!-- Bootstrap Core CSS -->
         <link href="{% static 'mapfeed/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -32,7 +32,7 @@
                 <ul class="sidebar-nav">
                     {% block sidelines %}
                     <li class="sidebar-brand">Rail Tracker</li>
-                    {% endblock %}
+                    {% endblock sidelines %}
                     <li>
                         <a href="#">About</a>
                     </li>
@@ -50,7 +50,8 @@
                         <div class="col-lg-12">
     						<!-- Header -->
     					    <img class="intro-header" src="{% static 'mapfeed/img/banner.png' %}" alt="Washington Metro" align="right">
-    											
+
+                            {% block map %}                            
     						<div><script type="text/processing" data-processing-target="railMap">
     						void setup()
     							{
@@ -363,7 +364,7 @@
     						</script>
     						<canvas id="railMap" class="img-responsive"></canvas>
     						</div>
-    						
+                            {% endblock map %}
     
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
                         </div>
@@ -375,7 +376,7 @@
         </div>
         <!-- /#wrapper -->
 
-        {% block tweets %}{% endblock %}
+        {% block tweets %}{% endblock tweets %}
     
         <!-- jQuery -->
         <script src="{% static 'mapfeed/js/jquery.js' %}"></script>
