@@ -1,16 +1,18 @@
 from django.conf import settings
 from pprint import pprint
 from railtracker.mapfeed.models import MapStation, MapLine, MapCity
-import httplib, urllib, base64
-import json
+import httplib, urllib, base64, json
 
 def loadCity():
-    c_model = MapCity(
-            city_name="Washington D.C.",
-            rail_name="Metro",
-            twitter_id="MetroRailInfo"
-    )
-    c_model.save()
+    try:
+        MapCity.objects.get(city_name="Washington D.C.")
+    except Exception as e:
+        c_model = MapCity(
+                city_name="Washington D.C.",
+                rail_name="Metro",
+                twitter_id="MetroRailInfo"
+        )
+        c_model.save()
 
 def loadLines ():
     try:
