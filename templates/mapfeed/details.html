@@ -1,10 +1,11 @@
 {% extends "mapfeed/base.html" %}
+{% load mapfeed_extras %}
 
 {% block title %}
 {% if city %}
     {{ city.city_name }} {{ city.rail_name }} Tracker
 {% endif %}
-{% endblock %}
+{% endblock title %}
 
 {% block sidelines %}
 {% if city %}
@@ -17,12 +18,39 @@
     {% endfor %}
     {% endif %}
 {% endif %}
-{% endblock %}
+{% endblock sidelines %}
 
+{% block station_list %}
+{% if stations %}
+var n = [
+{% for station in stations %}
+    {x: {{ station.x_coord }}*sz, y: {{ station.y_coord }}*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: '{{ station.station_name }}'},
+{% endfor %}
+];
+{% endif %}
+{% endblock station_list %}
+
+{% block line_draw %}
+{% if lines and stations and paths %}
+{% for line in lines %}
+    function draw{{ line.line_name }}() {
+        stroke(#{{ line.line_color|default:"000000" }})
+
+        {% for i, path in paths %}
+        line({{ path.station.x_coord }}, {{ path.station.y_coord }}, {{ nextstationx paths i }}, {{ paths|nextstationy:1 }})
+        {% endfor %}
+    }
+    draw{{ line.line_name }}();
+{% endfor %}
+{% endif %}
+{% endblock line_draw %}
+
+{% comment %}
 {% block tweets %}
 {% if statuses %}
 {% for status in statuses %}
     <p>{{ status.text }}<br/><b>{{ status.created_at }}</b></p>
 {% endfor %}
 {% endif %}
-{% endblock %}
+{% endblock tweets %}
+{% endcomment %}

@@ -8,7 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{% block title %}Rail Tracker{% endblock %}</title>
+        <title>{% block title %}Rail Tracker{% endblock title %}</title>
    
         <!-- Bootstrap Core CSS -->
         <link href="{% static 'mapfeed/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -32,7 +32,7 @@
                 <ul class="sidebar-nav">
                     {% block sidelines %}
                     <li class="sidebar-brand">Rail Tracker</li>
-                    {% endblock %}
+                    {% endblock sidelines %}
                     <li>
                         <a href="#">About</a>
                     </li>
@@ -50,7 +50,8 @@
                         <div class="col-lg-12">
     						<!-- Header -->
     					    <img class="intro-header" src="{% static 'mapfeed/img/banner.png' %}" alt="Washington Metro" align="right">
-    											
+
+                            {% block map %}                            
     						<div><script type="text/processing" data-processing-target="railMap">
     						void setup()
     							{
@@ -65,7 +66,8 @@
     								};
     
     								var sz = 0.8;
-    
+
+                                    {% block station_list %} 
     								var n = [
     									{x: 1204*sz, y:  633*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 1, name: "Addison Road"},			//0
     									{x:  951*sz, y:  805*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Anacostia"},			//1
@@ -159,10 +161,10 @@
     									{x:  166*sz, y:  478*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 1, name: "Wiehl-Reston East"},
     									{x:  619*sz, y:  399*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Woodley Park"},			//90
     								];
-    								
+                                    {% endblock station_list %}
     								strokeWeight(12);
     								noFill();										
-    								
+                                    {% block line_draw %}
     								//Red Line
     								function RedLine(){
     								stroke(#BF1238);
@@ -345,7 +347,8 @@
     									bezier(n[15].x, n[15].y, n[15].x, n[15].y, n[38].x, n[38].y, n[38].x, n[38].y); //name: "College Park"},15
     									 //name: Greenbelt"},38
     								}
-    								GreenLine();
+                                    GreenLine();
+                                    {% endblock line_draw %}
     
     								
     								fill(255);
@@ -363,7 +366,7 @@
     						</script>
     						<canvas id="railMap" class="img-responsive"></canvas>
     						</div>
-    						
+                            {% endblock map %}
     
                             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
                         </div>
@@ -375,7 +378,7 @@
         </div>
         <!-- /#wrapper -->
 
-        {% block tweets %}{% endblock %}
+        {% block tweets %}{% endblock tweets %}
     
         <!-- jQuery -->
         <script src="{% static 'mapfeed/js/jquery.js' %}"></script>

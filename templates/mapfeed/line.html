@@ -1,17 +1,15 @@
-<html>
-    <head>
-    {% if city %}
-        <title>{{ city.city_name }} {{ city.rail_name }} Tracker</title>
-    {% else %}
-        <title>Rail Tracker</title>
-    {% endif %}
-    </head>
-    <body>
-        {% if line %}
-        <p>Line Name: {{ line.line_name }}</p>
-        <p>Code: {{line.line_code }}</p>
-        {% else %}
-        <p>No line info to display.</p>
-        {% endif %}
-    </body>
-</html>
+{% extends "mapfeed/base.html" %}
+
+{% block title %}
+{% if city %}
+    {% if line %}{{ line.line_name }} - {% endif %}{{ city.city_name }} {{ city.rail_name }}
+{% endif %}
+{% endblock title %}
+
+{% block map %}
+{% if stations %}
+{% for station in stations %}
+    <p>{{station.station_name}}</p>
+{% endfor %}
+{% endif %}
+{% endblock map %}

@@ -3,10 +3,21 @@ from fields import ListField
 
 # Create your models here.
 class MapCity(models.Model):
+   #Creation date
    create_date = models.DateTimeField('Date Created', auto_now_add=True)
+
+   #Name of the city
    city_name = models.CharField(max_length=200)
+
+   #Local rail name
    rail_name = models.CharField(max_length=200)
+
+   #Twitter screen name
    twitter_id = models.CharField(max_length=15, null=True, blank=True)
+
+   class Meta:
+        verbose_name = 'City'
+        verbose_name_plural = 'Cities'
 
    def __unicode__(self):
         return self.city_name + " " + self.rail_name
@@ -23,6 +34,10 @@ class MapLine(models.Model):
 
     def __unicode__(self):
         return self.line_name
+
+    class Meta:
+        verbose_name = 'Line'
+        verbose_name_plural = 'Lines'
 
 class MapStation(models.Model):
     #Station Name
@@ -45,12 +60,23 @@ class MapStation(models.Model):
     def __unicode__(self):
         return self.station_name
 
-class MapPath(models.Model):
-    station_a = models.ForeignKey(MapStation, related_name='path_a')
-    station_b = models.ForeignKey(MapStation, related_name='path_b')
+    class Meta:
+        verbose_name = 'Station'
+        verbose_name_plural = 'Stations'
 
-    def __unicode__(self):
-        return self.station_a + " to " + self.station_b
+class MapPath(models.Model):
+    #Line associated with path
+    line = models.ForeignKey(MapLine)
+
+    #Station info
+    station = models.ForeignKey(MapStation)
+
+    #Sequence in the line
+    seq_num = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Path'
+        verbose_name_plural = 'Paths'
 
 class Incident(models.Model):
     #Incident date
@@ -73,3 +99,32 @@ class Incident(models.Model):
 
     def __unicode__(self):
         return self.incident_date + "(" + self.incident_type + ")"
+
+    class Meta:
+        verbose_name = 'Incident'
+        verbose_name_plural = 'Incidents'
+
+class Dict_Entry(models.Model):
+    #Dictionary key
+    lookup = models.CharField(max_length=140)
+
+    #Dictionary value (ie category/line/station)
+    translation = models.CharField(max_length=140)
+
+    #Translation category (line/station/incident category)
+    CAT_CHOICES = (
+            ('IC', 'Incident Category'),
+            ('ST', 'Station'),
+            ('LI', 'Line'),
+    )
+    translation_cat = models.CharField(max_length=2, choices=CAT_CHOICES)
+
+    #Associated cities
+    city = models.ManyToManyField(MapCity)
+
+    def __unicode__(self):
+        return self.lookup
+
+    class Meta:
+        verbose_name = 'Entry'
+        verbose_name_plural = 'Entries'
