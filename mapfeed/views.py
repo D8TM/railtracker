@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf import settings
-from mapfeed.models import MapCity, MapLine
+from mapfeed.models import MapCity, MapLine, MapStation, MapPath
 import twitter
 
 def index(request):
@@ -10,6 +10,10 @@ def index(request):
 def details(request, city_id):
     city = get_object_or_404(MapCity, pk=city_id)
     lines = MapLine.objects.filter(map=city_id)
+
+    line_ids = MapLine.objects.values('id').filter(map=city_id)
+    stations = MapStation.objects.filter(lines__id__in=line_ids).distinct().order_by('station_name')
+    paths = MapPath.objects.filter(line__id__in=line_ids)
     
     api = twitter.Api(
             consumer_key=settings.TWITTER_CONSUMER_KEY,
@@ -22,7 +26,9 @@ def details(request, city_id):
     return render_to_response('mapfeed/details.html', {
         'city': city, 
         'statuses': statuses,
-        'lines': lines
+        'lines': lines,
+        'stations': stations,
+        'paths': paths
     })
 
 def line(request, city_id, line_id):
