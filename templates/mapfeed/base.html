@@ -66,7 +66,8 @@
     								};
     
     								var sz = 0.8;
-    
+
+                                    {% block station_list %} 
     								var n = [
     									{x: 1204*sz, y:  633*sz, red: 0, blue: 1, orange: 0, yellow: 0, green: 0, silver: 1, name: "Addison Road"},			//0
     									{x:  951*sz, y:  805*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 1, silver: 0, name: "Anacostia"},			//1
@@ -160,10 +161,10 @@
     									{x:  166*sz, y:  478*sz, red: 0, blue: 0, orange: 0, yellow: 0, green: 0, silver: 1, name: "Wiehl-Reston East"},
     									{x:  619*sz, y:  399*sz, red: 1, blue: 0, orange: 0, yellow: 0, green: 0, silver: 0, name: "Woodley Park"},			//90
     								];
-    								
+                                    {% endblock station_list %}
     								strokeWeight(12);
     								noFill();										
-    								
+                                    {% block line_draw %}
     								//Red Line
     								function RedLine(){
     								stroke(#BF1238);
@@ -346,7 +347,8 @@
     									bezier(n[15].x, n[15].y, n[15].x, n[15].y, n[38].x, n[38].y, n[38].x, n[38].y); //name: "College Park"},15
     									 //name: Greenbelt"},38
     								}
-    								GreenLine();
+                                    GreenLine();
+                                    {% endblock line_draw %}
     
     								
     								fill(255);

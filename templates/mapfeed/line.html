@@ -5,9 +5,11 @@
     {% if line %}{{ line.line_name }} - {% endif %}{{ city.city_name }} {{ city.rail_name }}
 {% endif %}
 {% endblock title %}
-        {% if line %}
-        <p>Line Name: {{ line.line_name }}</p>
-        <p>Code: {{line.line_code }}</p>
-        {% else %}
-        <p>No line info to display.</p>
-        {% endif %}
+
+{% block map %}
+{% if stations %}
+{% for station in stations %}
+    <p>{{station.station_name}}</p>
+{% endfor %}
+{% endif %}
+{% endblock map %}
