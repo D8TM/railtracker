@@ -33,3 +33,6 @@ def line(request, city_id, line_id):
             {'city': city,
                 'line': line}
     )
+
+def about(request):
+    return render_to_response('mapfeed/about.html')

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+{% load i18n static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% if city %}
+        <title>{{ city.city_name }} {{ city.rail_name }} Tracker</title>
+    {% else %}
+        <title>Rail Tracker</title>
+    {% endif %}
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'mapfeed/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'mapfeed/css/simple-sidebar.css' %}" rel="stylesheet">
+	
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+	
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                <a href="#">
+                    {% if city %}
+                    {{ city.city_name }} {{ city.rail_name }} Tracker
+                    {% else %}
+                    Rail Tracker
+                    {% endif %}
+                </a>
+                </li>
+                <li>
+                    <a href="redline.html" id ="rdsb" >Red Line</a>
+                </li>
+                <li>
+                    <a href="orangeline.html" id ="orsb" >Orange Line</a>
+                </li>
+                <li>
+                    <a href="silverline.html" id ="svsb" >Silver Line</a>
+                </li>
+                <li>
+                    <a href="blueline.html" id ="blsb" >Blue Line</a>
+                </li>
+                <li>
+                    <a href="yellowline.html" id ="ylsb" >Yellow Line</a>
+                </li>
+				<li>
+                    <a href="greenline.html" id ="grsb" >Green Line</a>
+                </li>
+				<li>
+                    <a href="details.html">All</a>
+                </li>
+                <li>
+                    <a href="about.html">About/Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+						<!-- Header -->					
+						<div><img class="logo" src="{% static 'mapfeed/img/Logo.png' %}" alt="d8tm logo" align="right"></div>
+
+						<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+						<div class="about">
+						<p>At d8tm we cry ourselves to sleep... and wake up laughing.</p>
+						<p>We are a duo located in the DC metropolitan area. Individually we go by Francis and Long. Together, we're trying to save the world of its first world problems with the use of our data.</p>
+						</div>
+						
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	
+    <div>
+    {% if statuses %}
+    {% for status in statuses %}
+        <p>{{ status.text }}<br/><b>{{ status.created_at }}</b></p>
+    {% endfor %}
+    {% endif %}
+    </div>
+	
+    <!-- jQuery -->
+    <script src="{% static 'mapfeed/js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'mapfeed/js/bootstrap.min.js' %}"></script>
+
+	<!-- processing.js -->
+	<script src="{% static 'mapfeed/js/processing.js' %}"></script>
+	
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>
