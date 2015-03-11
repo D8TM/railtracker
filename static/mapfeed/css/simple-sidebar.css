@@ -173,18 +173,40 @@ a:hover{
 	}
 }
 
+.logo{
+	position: absolute;
+	margin-top: 50px;
+	margin-left: 50px;
+}
+
+/*temp*/
+.about {
+	position: absolute;
+    margin-top: 150px;
+    margin-right: 100px;
+    margin-left: 210px;
+	font-family: "Times New Roman";
+	font-size: 15px;
+	line-height: 15px;
+}
+
+/*test*/
+.col-lg-12{
+position: relative;
+}
+/*test*/
+#alerts{
+	position:absolute;
+	top: 50px;
+	left: -50px;
+	z-index:120;
+}
+
 #railMap{
 	position:absolute;
 	top: 50px;
 	left: -50px;
-	z-index:4;
-}
-
-#redLine{
-	position:absolute;
-	top: 50px;
-	left: -50px;
-	z-index:5;
+	z-index:100;
 }
 
 .img-responsive{
