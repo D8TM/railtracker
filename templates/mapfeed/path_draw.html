@@ -1,0 +1,5 @@
+{% load graphic_tags %}
+
+{% for station in seq_sta %}
+line({{ station.x_coord }}*sz, {{ station.y_coord }}*sz, {{ seq_sta|next_station_x:forloop.counter0 }}*sz, {{ seq_sta|next_station_y:forloop.counter0 }}*sz)
+{% endfor %}
