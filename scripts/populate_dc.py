@@ -16,6 +16,13 @@ def loadCity():
         c_model.save()
 
 def loadLines():
+    colors = {'Orange': 'CC6600',
+            'Blue': '0033CC',
+            'Silver': 'B2CCCC',
+            'Red': 'FF0000',
+            'Yellow': 'FFFF00',
+            'Green': '00CC00',
+            }
     try:
         conn.request("GET", "/Rail.svc/json/jLines?%s" % params, "", headers)
         response = conn.getresponse()
@@ -31,7 +38,8 @@ def loadLines():
         l_model = MapLine(
                 map_id=city,
                 line_name=line['DisplayName'],
-                line_code=line['LineCode']
+                line_code=line['LineCode'],
+                color=colors[line['DisplayName']],
         )
         l_model.save()
 
@@ -49,15 +57,35 @@ def loadStations():
     for station in decoded_stations['Stations']:
         print station['Name']
         try:
-            s_model = MapStation.objects.get(station_name=station['Name'])
-        except Exception:
+            s_model = MapStation.objects.get(station_code=station['Code'])
+        except MapStation.DoesNotExist as dne:
             s_model = MapStation(
                     station_name=station['Name'],
                     lat=station['Lat'],
                     lon=station['Lon'],
-                    station_code=station['Code']
+                    station_code=station['Code'],
             )
-            s_model.save()
+        try:
+            s_model.through_station = MapStation.objects.get(station_code=station['StationTogether1'])
+            print "Found through station."
+            print s_model.through_station
+        except MapStation.DoesNotExist as dne:
+            if station['StationTogether1']:
+                print "Through station indicated but station not found in database. Creating station..."
+                s_model.save()
+                copy_model = MapStation(
+                        station_name=station['Name'],
+                        lat=station['Lat'],
+                        lon=station['Lon'],
+                        station_code=station['StationTogether1'],
+                )
+                copy_model.through_station = s_model
+                copy_model.save()
+                s_model.through_station = copy_model
+                s_model.save()
+            else:
+                print "No through station found."
+                s_model.save()
         for x in range(1, 5):
             try:
                 line = MapLine.objects.get(line_code=station['LineCode' + str(x)], map=city)
@@ -90,7 +118,7 @@ def loadPaths():
                     seq_num=i
             )
             s_path.line = MapLine.objects.get(line_name=line, map=city)
-            s_path.station = MapStation.objects.get(station_name=path['Name'])
+            s_path.station = MapStation.objects.get(station_code=path['Code'])
             s_path.save()
 
 #Vars
@@ -104,7 +132,7 @@ params = urllib.urlencode({
 conn = httplib.HTTPSConnection('api.wmata.com')
 
 #Calls
-#loadCity()
-#loadLines()
-#loadStations()
+loadCity()
+loadLines()
+loadStations()
 loadPaths()

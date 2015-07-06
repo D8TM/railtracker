@@ -1,5 +1,5 @@
 from django.db import models
-from fields import ListField
+from fields import ListField, ColourField
 
 # Create your models here.
 class MapCity(models.Model):
@@ -32,6 +32,10 @@ class MapLine(models.Model):
     #Line code
     line_code = models.CharField(max_length=2)
 
+    #Line color
+    #color = ColourField()
+    color = models.CharField(max_length=6)
+
     def __unicode__(self):
         return self.line_name
 
@@ -56,6 +60,9 @@ class MapStation(models.Model):
 
     #Lines that run through the station
     lines = models.ManyToManyField(MapLine)
+
+    #Repeat stations. Typically, the intersection of two lines
+    through_station = models.ForeignKey('self', null=True)
 
     def __unicode__(self):
         return self.station_name
@@ -98,7 +105,8 @@ class Incident(models.Model):
     lines = models.ManyToManyField(MapLine)
 
     def __unicode__(self):
-        return self.incident_date + "(" + self.incident_type + ")"
+        #return self.incident_date.strftime("%Y-%m-%d %H:%M:%S") + "(" + self.incident_type + ")"
+        return self.incident_type
 
     class Meta:
         verbose_name = 'Incident'
